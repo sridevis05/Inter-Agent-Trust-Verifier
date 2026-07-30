@@ -1,0 +1,45 @@
+# Global Values
+replicaCount: 3
+
+image:
+  backend:
+    repository: sentineltrust/backend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  frontend:
+    repository: sentineltrust/frontend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: sentineltrust.enterprise.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Dependency configurations
+postgresql:
+  enabled: true
+  auth:
+    database: sentineltrust
+    username: postgres
+    password: postgrespassword
+
+redis:
+  enabled: true
+  architecture: standalone
+
+rabbitmq:
+  enabled: true
+  auth:
+    username: guest
+    password: guestpassword

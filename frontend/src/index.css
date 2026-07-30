@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    font-weight: 400 !important;
+    color: #f1f5f9 !important; /* Premium high-contrast light grey for clean reading */
+    line-height: 1.625 !important; /* Comfortable line height */
+    letter-spacing: 0.015em !important; /* Proper text spacing */
+    word-spacing: 0.06em !important; /* Spacious word-spacing */
+  }
+}
+
+/* Typographical Spacing & Weight Hierarchy */
+* {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Monospaced fields & code elements */
+.font-mono, code, pre, kbd, samp, select, option, input, textarea {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+}
+
+/* Bold necessary details only (Headings, table headers, bold text elements) */
+h1, h2, h3, h4, h5, h6, strong, b, th, .font-bold, .font-semibold {
+  font-weight: 700 !important;
+  color: #ffffff !important; /* Bright white for key metrics and headings */
+}
+
+/* Standard paragraph, labels, and spans hierarchy */
+p, span, td, li, pre, code {
+  font-weight: 450 !important;
+  line-height: 1.625 !important;
+}
+
+label, .uppercase {
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+}
+
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Glow Borders */
+.border-glow-blue {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+}
+
+.border-glow-purple {
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+}
+
+.border-glow-green {
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}
+
+.border-glow-red {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+}
+
+/* Custom Scrollbar for cyber theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+/* Glowing Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.95;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.animate-svg-dash {
+  stroke-dasharray: 8, 4;
+  animation: dash 2s linear infinite;
+}
+
+/* Global Font Size Scale for Readability & Consistency */
+.text-\[8px\] {
+  font-size: 10px !important;
+}
+.text-\[9px\] {
+  font-size: 11px !important;
+}
+.text-\[10px\] {
+  font-size: 12px !important;
+}
+.text-\[11px\] {
+  font-size: 13px !important;
+}
+.text-xs {
+  font-size: 12px !important;
+}
+.text-sm {
+  font-size: 14px !important;
+}
+.text-base {
+  font-size: 15px !important;
+}
+.text-lg {
+  font-size: 18px !important;
+}
+.text-xl {
+  font-size: 20px !important;
+}
+.text-2xl {
+  font-size: 24px !important;
+}
+.text-3xl {
+  font-size: 30px !important;
+}
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: 0.025em !important;
+  margin-bottom: 0.85rem !important;
+}
+
+/* Layout Spacing & Spaciouness for a Neat, Premium Look */
+.glass-panel, .glass-card {
+  padding: 1.75rem !important; /* Roomy but balanced card paddings */
+  margin-bottom: 1.75rem !important;
+  border-radius: 16px !important;
+}
+
+/* Grids and flex spacing */
+.grid {
+  gap: 1.5rem; /* Allow Tailwind classes to override if specified */
+}
+
+/* Table Spacing */
+table th, table td {
+  padding: 1.25rem 1.5rem !important; /* Relaxed cell padding */
+}
+
+table tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Forms and Inputs */
+input, select, textarea {
+  padding: 0.95rem 1.25rem !important; /* Comfortably large input fields */
+  margin-top: 0.5rem !important;
+  margin-bottom: 1.25rem !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+}
+
+button {
+  padding: 0.95rem 1.5rem !important; /* Roomy buttons */
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Global Content container padding */
+main {
+  padding: 2.5rem 3.5rem !important; /* Large dashboard wrapper padding */
+}
+
+/* Sidebar item padding */
+aside nav button {
+  padding: 0.85rem 1.25rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+/* Space out descriptions and paragraphs */
+p {
+  margin-top: 0.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+

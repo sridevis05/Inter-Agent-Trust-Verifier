@@ -1,0 +1,124 @@
+{
+  "info": {
+    "_postman_id": "8a82b921-2a91-4fa2-8b2c-98ad2f91e921",
+    "name": "SentinelTrust AI Gateway API",
+    "description": "Collection of API queries to test the SentinelTrust AI Zero Trust verification gateway and tenant controls.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Zero Trust Gateways",
+      "item": [
+        {
+          "name": "Verify Agent Instruction (Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Trace-ID", "value": "trace_postman_test_1" },
+              { "key": "X-Span-ID", "value": "span_postman_1" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"protocol_version\": \"1.0\",\n  \"instruction_id\": \"inst_pm_01\",\n  \"sender\": \"planner_agent\",\n  \"receiver\": \"developer_agent\",\n  \"timestamp\": \"2026-07-30T14:40:00Z\",\n  \"nonce\": \"nonce_pm_982f1a\",\n  \"kid\": \"key_planner_agent_v1\",\n  \"signature\": \"mock_signature_of_mcp_client\",\n  \"payload\": {\n    \"action\": \"WriteCode\",\n    \"resource\": \"SourceRepo\",\n    \"params\": {\n      \"file\": \"main.py\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/verify",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "v1", "verify"]
+            }
+          }
+        },
+        {
+          "name": "Verify Agent Instruction (Deny - Invalid Sign)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"protocol_version\": \"1.0\",\n  \"instruction_id\": \"inst_pm_02\",\n  \"sender\": \"planner_agent\",\n  \"receiver\": \"developer_agent\",\n  \"timestamp\": \"2026-07-30T14:40:00Z\",\n  \"nonce\": \"nonce_pm_982f1b\",\n  \"kid\": \"key_planner_agent_v1\",\n  \"signature\": \"mismatching_signature_value\",\n  \"payload\": {\n    \"action\": \"WriteCode\",\n    \"resource\": \"SourceRepo\",\n    \"params\": {\n      \"file\": \"main.py\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/verify",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "v1", "verify"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OPA Policies",
+      "item": [
+        {
+          "name": "List Tenant Policies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/policies?tenant_id=org_a",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "v1", "policies"],
+              "query": [
+                { "key": "tenant_id", "value": "org_a" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Compile OPA Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"pol_postman_test_rule\",\n  \"tenant_id\": \"org_a\",\n  \"subject_role\": \"DeveloperAgent\",\n  \"action\": \"Deploy\",\n  \"resource\": \"ProductionServer\",\n  \"effect\": \"Allow\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/policies/create",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "v1", "policies", "create"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Security Copilot",
+      "item": [
+        {
+          "name": "Query Virtual Analyst",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"How do I resolve the rate limit flooding anomaly warnings?\",\n  \"tenant_id\": \"org_a\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/copilot/query",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "v1", "copilot", "query"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
