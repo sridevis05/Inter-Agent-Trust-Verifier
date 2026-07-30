@@ -98,8 +98,12 @@ class VerificationEngine:
         sender_agent = db.query(Agent).filter(Agent.id == instruction.sender).first()
         initial_score = sender_agent.trust_score if sender_agent else 100.0
         
+        # Reputation and scrutiny tracking
+        reputation_penalty_score = 100.0 - initial_score
+        heightened_scrutiny = reputation_penalty_score > 20.0
+        
         # Risk analytics variables
-        risk_score = 0.0
+        risk_score = 35.0 if heightened_scrutiny else 0.0
         confidence_score = 100.0
         failure_reason = None
         explanation = None
@@ -358,9 +362,23 @@ class VerificationEngine:
             
             step_results["Delegation Token Validation"] = True
         else:
-            # If no delegation token, default step to True since delegation check isn't applicable
-            # but standard policy checking is still required.
-            step_results["Delegation Token Validation"] = True
+            if heightened_scrutiny:
+                failure_reason = "Heightened Scrutiny: Delegation token strictly required due to low reputation score"
+                risk_score = 90.0
+                confidence_score = 20.0
+                explanation = ExplainabilityDetails(
+                    human_explanation=f"Agent '{instruction.sender}' is under heightened scrutiny due to poor trust history (reputation penalty score: {reputation_penalty_score:.1f}). Instructions from this agent must include a valid delegation token to prove authorization.",
+                    machine_exception="HeightenedScrutinyError: delegation_token_missing",
+                    suggested_fix="Acquire a valid delegation token signed by the ManagerAgent before sending tasks."
+                )
+                return cls._compile_failure(
+                    db, instruction, sender_agent, start_time, risk_score, confidence_score,
+                    failure_reason, explanation, step_results, ip_address, trace_id, span_id, "High"
+                )
+            else:
+                # If no delegation token, default step to True since delegation check isn't applicable
+                # but standard policy checking is still required.
+                step_results["Delegation Token Validation"] = True
 
         # 9. Policy & Permission Check (ABAC + RBAC)
         policies = db.query(Policy).all()

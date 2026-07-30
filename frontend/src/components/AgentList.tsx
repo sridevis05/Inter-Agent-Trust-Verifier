@@ -97,49 +97,61 @@ export const AgentList: React.FC<AgentListProps> = ({ agents, onRefresh }) => {
 
       {/* Grid of registered agents */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        {agents.map((agent) => (
-          <div key={agent.id} className="border border-slate-800 bg-slate-900/30 rounded-xl p-6 glass-panel flex flex-col justify-between">
-            {/* Identity & Status */}
-            <div>
-              <div className="flex justify-between items-start">
-                <div className="space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-[10px] font-mono text-blue-400 bg-blue-950/40 border border-blue-900/30 px-2 py-0.5 rounded">
-                      {agent.role}
-                    </span>
-                    <span className="text-[10px] font-mono text-slate-500">KID: {agent.kid}</span>
+        {agents.map((agent) => {
+          const reputationPenalty = 100.0 - agent.trust_score;
+          return (
+            <div key={agent.id} className="border border-slate-800 bg-slate-900/30 rounded-xl p-6 glass-panel flex flex-col justify-between">
+              {/* Identity & Status */}
+              <div>
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-[10px] font-mono text-blue-400 bg-blue-950/40 border border-blue-900/30 px-2 py-0.5 rounded">
+                        {agent.role}
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500">KID: {agent.kid}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white mt-1 flex items-center space-x-2">
+                      <span>{agent.name}</span>
+                      {reputationPenalty > 20 && (
+                        <span className="bg-red-950/80 border border-red-800 text-red-400 text-[8px] font-mono font-extrabold px-1.5 py-0.5 rounded animate-pulse shadow-glow-red/10">
+                          🚨 HEIGHTENED SCRUTINY ACTIVE
+                        </span>
+                      )}
+                    </h3>
+                    <p className="text-xs font-mono text-slate-500">{agent.id}</p>
                   </div>
-                  <h3 className="text-lg font-bold text-white mt-1">{agent.name}</h3>
-                  <p className="text-xs font-mono text-slate-500">{agent.id}</p>
-                </div>
 
-                <div className="flex flex-col items-end space-y-2">
-                  {/* Status Badge */}
-                  <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase ${
-                    agent.status === 'Active' ? 'bg-emerald-950 border border-emerald-800 text-emerald-400' :
-                    agent.status === 'Suspended' ? 'bg-yellow-950 border border-yellow-800 text-yellow-400' :
-                    'bg-red-950 border border-red-800 text-red-400'
-                  }`}>
-                    {agent.status}
-                  </span>
-
-                  {/* Trust Score */}
-                  <div className="text-right">
-                    <span className="text-[9px] font-mono text-slate-500 block">TRUST SCORE</span>
-                    <span className={`text-sm font-mono font-bold ${
-                      agent.trust_score >= 80 ? 'text-emerald-400' :
-                      agent.trust_score >= 50 ? 'text-yellow-400' :
-                      agent.trust_score >= 30 ? 'text-orange-400' :
-                      'text-red-400'
+                  <div className="flex flex-col items-end space-y-2">
+                    {/* Status Badge */}
+                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase ${
+                      agent.status === 'Active' ? 'bg-emerald-950 border border-emerald-800 text-emerald-400' :
+                      agent.status === 'Suspended' ? 'bg-yellow-950 border border-yellow-800 text-yellow-400' :
+                      'bg-red-950 border border-red-800 text-red-400'
                     }`}>
-                      {agent.trust_score.toFixed(1)} / 100
+                      {agent.status}
                     </span>
+
+                    {/* Trust Score */}
+                    <div className="text-right">
+                      <span className="text-[9px] font-mono text-slate-500 block">TRUST SCORE</span>
+                      <span className={`text-sm font-mono font-bold ${
+                        agent.trust_score >= 80 ? 'text-emerald-400' :
+                        agent.trust_score >= 50 ? 'text-yellow-400' :
+                        agent.trust_score >= 30 ? 'text-orange-400' :
+                        'text-red-400'
+                      }`}>
+                        {agent.trust_score.toFixed(1)} / 100
+                      </span>
+                      <span className="text-[8px] font-mono text-slate-500 block mt-0.5">
+                        REPUTATION PENALTY: <strong className={reputationPenalty > 20 ? 'text-red-400 animate-pulse' : 'text-slate-400'}>{reputationPenalty.toFixed(1)}</strong>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Progress bar */}
-              <div className="w-full bg-slate-800 h-1.5 rounded-full mt-4 overflow-hidden">
+                {/* Progress bar */}
+                <div className="w-full bg-slate-800 h-1.5 rounded-full mt-4 overflow-hidden">
                 <div 
                   className={`h-full transition-all duration-500 ${
                     agent.trust_score >= 80 ? 'bg-emerald-500' :
@@ -248,8 +260,9 @@ export const AgentList: React.FC<AgentListProps> = ({ agents, onRefresh }) => {
               </button>
             </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
+    </div>
 
       {/* Modal Add Agent */}
       {showAddModal && (

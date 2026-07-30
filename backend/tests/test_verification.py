@@ -148,3 +148,69 @@ def test_pipeline_flooding_anomaly_detection(db_session):
     )
     assert res.is_valid is False
     assert "flooding vector" in res.failure_reason
+
+def test_heightened_scrutiny_enforcement(db_session):
+    sender = db_session.query(Agent).filter(Agent.id == "planner_agent").first()
+    
+    # Store old trust score
+    old_trust = sender.trust_score
+    try:
+        # Set trust score below 80.0 to trigger heightened scrutiny
+        sender.trust_score = 75.0
+        db_session.commit()
+        
+        payload = {
+            "action": "WriteCode",
+            "resource": "SourceRepo",
+            "params": {"file": "app.py"}
+        }
+        priv_key = decrypt_private_key(sender.encrypted_private_key_pem)
+        signature = sign_payload(priv_key, payload)
+        
+        # Instruction without delegation token
+        instruction = SignedInstruction(
+            protocol_version="1.0",
+            instruction_id="inst_test_scrutiny_fail",
+            sender="planner_agent",
+            receiver="developer_agent",
+            timestamp=datetime.datetime.utcnow().isoformat() + "Z",
+            nonce="nonce_test_scrutiny_fail",
+            kid=sender.kid,
+            signature=signature,
+            payload=payload
+        )
+        
+        res, _ = VerificationEngine.verify_instruction(
+            db=db_session,
+            instruction=instruction,
+            ip_address="127.0.0.1",
+            trace_id="trace_scrutiny",
+            span_id="span_scrutiny"
+        )
+        
+        # Should be rejected because it lacks a delegation token under heightened scrutiny
+        assert res.is_valid is False
+        assert "Heightened Scrutiny" in res.failure_reason
+        assert res.risk_score == 90.0
+        
+        # Now reset trust score to 100.0 (scrutiny inactive)
+        sender.trust_score = 100.0
+        db_session.commit()
+        
+        # Use a new nonce
+        instruction.nonce = "nonce_test_scrutiny_success"
+        
+        res2, _ = VerificationEngine.verify_instruction(
+            db=db_session,
+            instruction=instruction,
+            ip_address="127.0.0.1",
+            trace_id="trace_scrutiny_2",
+            span_id="span_scrutiny_2"
+        )
+        # Should now succeed since heightened scrutiny is inactive
+        assert res2.is_valid is True
+        
+    finally:
+        # Restore agent state
+        sender.trust_score = old_trust
+        db_session.commit()

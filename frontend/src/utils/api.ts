@@ -125,41 +125,6 @@ export const getWSUrl = () => {
   return `${protocol}//${loc.hostname}:8000/ws`;
 };
 
-// API Key Manager calls
-export interface ApiKey {
-  id: string;
-  tenant_id: string;
-  name: string;
-  key_hash: string;
-  status: 'Active' | 'Revoked';
-  created_at: string;
-  expires_at: string;
-}
-
-export interface ApiKeyPlain {
-  key_id: string;
-  plain_key: string;
-  message: string;
-}
-
-export const getApiKeys = (tenantId: string = "org_a") => api.get<ApiKey[]>(`/api-keys?tenant_id=${tenantId}`);
-export const createApiKey = (tenantId: string, name: string) => api.post<ApiKeyPlain>('/api-keys/create', { tenant_id: tenantId, name });
-export const revokeApiKey = (keyId: string) => api.post<{ message: string }>(`/api-keys/${keyId}/revoke`);
-
-// Copilot calls
-export interface CopilotQueryResponse {
-  answer: string;
-  suggested_action?: string;
-  relevant_policy_id?: string;
-}
-
-export const askCopilot = (query: string, tenantId: string = "org_a", contextLogId?: string) => 
-  api.post<CopilotQueryResponse>('/copilot/query', { query, tenant_id: tenantId, context_log_id: contextLogId });
-
-// Incident status update
-export const updateIncidentStatus = (incidentId: string, status: string, assignee?: string) => 
-  api.post<{ message: string; status: string; assignee: string }>(`/agents/incidents/${incidentId}/status?status_value=${status}`, { assignee });
-
 export interface VerifyResponse {
   is_valid: boolean;
   risk_score: number;

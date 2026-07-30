@@ -3,18 +3,8 @@ import {
   ShieldAlert, 
   Activity, 
   Users, 
-  FileText, 
-  Network, 
-  Terminal, 
   FileLock2, 
-  History, 
-  Gauge, 
-  CheckSquare,
-  Key,
-  Play,
-  Layers,
-  Bot,
-  Star
+  History
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -26,39 +16,17 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userRole }) => {
   const categories = [
     {
-      label: "Telemetry & Mapping",
+      label: "Dashboard",
       items: [
         { id: 'overview', label: 'Overview', icon: Activity },
-        { id: 'live-pipeline', label: 'Agent Pipeline', icon: Network },
-        { id: 'architecture', label: 'Platform Blueprint', icon: Layers },
       ]
     },
     {
-      label: "Directory & Authorization",
+      label: "Operations",
       items: [
         { id: 'agents', label: 'Agent Directory', icon: Users },
-        { id: 'policies', label: 'Policy Engine', icon: FileText },
-        { id: 'playground', label: 'Policy Playground', icon: Play },
-        { id: 'api-keys', label: 'API Key Manager', icon: Key },
-        { id: 'sso-delegation', label: 'SSO & Delegation', icon: Key },
-        { id: 'mcp-sandbox', label: 'MCP Sandbox', icon: Terminal },
-      ]
-    },
-    {
-      label: "Incidents & Operations",
-      items: [
-        { id: 'incident-center', label: 'Incident Center', icon: ShieldAlert },
-        { id: 'copilot', label: 'Security Copilot', icon: Bot },
         { id: 'simulator', label: 'Threat Simulator', icon: ShieldAlert },
         { id: 'audit-logs', label: 'Security Audits', icon: History },
-      ]
-    },
-    {
-      label: "SaaS Auditing",
-      items: [
-        { id: 'governance', label: 'Compliance', icon: CheckSquare },
-        { id: 'benchmarks', label: 'System Health', icon: Gauge },
-        { id: 'demo-mode', label: 'One-Click Demo', icon: Star },
       ]
     }
   ];

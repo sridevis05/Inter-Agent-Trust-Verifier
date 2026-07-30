@@ -2,30 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Layout } from './components/Layout';
 import { DashboardOverview } from './components/DashboardOverview';
 import { AgentList } from './components/AgentList';
-import { PolicyManager } from './components/PolicyManager';
-import { LivePipeline } from './components/LivePipeline';
 import { AttackSimulator } from './components/AttackSimulator';
 import { AuditLogs } from './components/AuditLogs';
-import { Governance } from './components/Governance';
-import { Benchmarks } from './components/Benchmarks';
-import { MCPSandbox } from './components/MCPSandbox';
-import { SSODelegation } from './components/SSODelegation';
-
-// Enterprise Polish components
-import { InteractiveArchitecture } from './components/InteractiveArchitecture';
-import { ApiKeyManager } from './components/ApiKeyManager';
-import { IncidentCenter } from './components/IncidentCenter';
-import { Copilot } from './components/Copilot';
-import { PolicyPlayground } from './components/PolicyPlayground';
-import { DemoMode } from './components/DemoMode';
 
 import { 
   Agent, 
-  Policy, 
   AuditLog, 
   Analytics, 
   getAgents, 
-  getPolicies, 
   getAuditLogs, 
   getAnalytics, 
   getWSUrl 
@@ -38,29 +22,20 @@ export const App: React.FC = () => {
   const [tenantId, setTenantId] = useState<string>('org_a');
   const [userRole, setUserRole] = useState<string>('Super Admin');
 
-  // Copilot context log linkage
-  const [copilotLogId, setCopilotLogId] = useState<string>('');
-
   // Data State
   const [agents, setAgents] = useState<Agent[]>([]);
-  const [policies, setPolicies] = useState<Policy[]>([]);
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
-  
-  // WebSocket State
-  const [socketEvents, setSocketEvents] = useState<any[]>([]);
 
   // Function to load all core data scoped by active Tenant ID
   const loadAllData = async () => {
     try {
-      const [agentsRes, policiesRes, logsRes, analyticsRes] = await Promise.all([
+      const [agentsRes, logsRes, analyticsRes] = await Promise.all([
         getAgents(tenantId),
-        getPolicies(tenantId),
         getAuditLogs({ tenant_id: tenantId }),
         getAnalytics()
       ]);
       setAgents(agentsRes.data);
-      setPolicies(policiesRes.data);
       setLogs(logsRes.data);
       setAnalytics(analyticsRes.data);
     } catch (err) {
@@ -93,7 +68,6 @@ export const App: React.FC = () => {
           const parsed = JSON.parse(event.data);
           
           if (parsed.event === 'step_completed') {
-            setSocketEvents(prev => [...prev, parsed]);
             // Dynamically refresh directories on transaction steps
             loadAllData();
           }
@@ -126,11 +100,6 @@ export const App: React.FC = () => {
     l.verification_result === 'Failed' && ['High', 'Critical'].includes(l.threat_level)
   ).length;
 
-  const handleNavigateToCopilot = (logId: string) => {
-    setCopilotLogId(logId);
-    setActiveTab('copilot');
-  };
-
   return (
     <Layout 
       activeTab={activeTab} 
@@ -154,54 +123,9 @@ export const App: React.FC = () => {
           onRefresh={loadAllData} 
         />
       )}
-      {activeTab === 'policies' && (
-        <PolicyManager 
-          policies={policies} 
-          onRefresh={loadAllData} 
-        />
-      )}
-      {activeTab === 'playground' && (
-        <PolicyPlayground 
-          tenantId={tenantId} 
-          onRefreshPolicies={loadAllData} 
-        />
-      )}
-      {activeTab === 'api-keys' && (
-        <ApiKeyManager 
-          tenantId={tenantId} 
-        />
-      )}
-      {activeTab === 'live-pipeline' && (
-        <LivePipeline 
-          socketEvents={socketEvents} 
-          setSocketEvents={setSocketEvents} 
-        />
-      )}
-      {activeTab === 'architecture' && (
-        <InteractiveArchitecture />
-      )}
-      {activeTab === 'mcp-sandbox' && (
-        <MCPSandbox />
-      )}
-      {activeTab === 'sso-delegation' && (
-        <SSODelegation />
-      )}
       {activeTab === 'simulator' && (
         <AttackSimulator 
           onRefreshLogs={loadAllData} 
-        />
-      )}
-      {activeTab === 'incident-center' && (
-        <IncidentCenter 
-          tenantId={tenantId} 
-          onNavigateToCopilot={handleNavigateToCopilot} 
-        />
-      )}
-      {activeTab === 'copilot' && (
-        <Copilot 
-          tenantId={tenantId} 
-          initialLogId={copilotLogId} 
-          onClearInitialLog={() => setCopilotLogId('')} 
         />
       )}
       {activeTab === 'audit-logs' && (
@@ -209,17 +133,6 @@ export const App: React.FC = () => {
           logs={logs} 
           onRefresh={loadAllData} 
         />
-      )}
-      {activeTab === 'governance' && (
-        <Governance 
-          analytics={analytics} 
-        />
-      )}
-      {activeTab === 'benchmarks' && (
-        <Benchmarks />
-      )}
-      {activeTab === 'demo-mode' && (
-        <DemoMode />
       )}
     </Layout>
   );
