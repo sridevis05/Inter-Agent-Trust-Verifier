@@ -36,7 +36,7 @@ export const Layout: React.FC<LayoutProps> = ({
         <header className="h-16 border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-8 flex items-center justify-between print:hidden">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-blue-500 animate-pulse" />
+              <Shield className="w-5 h-5 text-white animate-pulse" />
               <h2 className="text-sm font-semibold tracking-wide text-slate-300 font-mono hidden md:block">
                 SENTINELTRUST GATEWAY
               </h2>
@@ -76,8 +76,8 @@ export const Layout: React.FC<LayoutProps> = ({
 
           <div className="flex items-center space-x-6">
             {/* Live alerts indicator */}
-            <div className="flex items-center space-x-2 text-xs font-mono bg-red-950/40 border border-red-900/50 px-3 py-1.5 rounded-full text-red-400">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+            <div className="flex items-center space-x-2 text-xs font-mono bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded-full text-white font-bold">
+              <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
               <span>{recentAlertsCount} ALERT{recentAlertsCount !== 1 ? 'S' : ''} DETECTED</span>
             </div>
 

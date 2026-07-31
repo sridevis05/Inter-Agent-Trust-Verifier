@@ -38,11 +38,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userR
       <div>
         {/* Branding header */}
         <div className="p-6 border-b border-slate-800 flex items-center space-x-3">
-          <div className="p-2 bg-blue-600/20 border border-blue-500/40 rounded-lg shadow-glow-blue">
-            <FileLock2 className="w-6 h-6 text-blue-400" />
+          <div className="p-2 bg-neutral-950 border border-slate-800 rounded-lg">
+            <FileLock2 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="font-bold tracking-wider text-sm text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">
+            <h1 className="font-bold tracking-wider text-sm text-white">
               SENTINELTRUST
             </h1>
             <span className="text-[9px] uppercase font-mono tracking-widest text-slate-500">
@@ -54,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userR
         {/* User context info */}
         <div className="px-6 py-3 border-b border-slate-800/60 bg-slate-950/20 font-mono text-[9px] text-slate-500 flex justify-between">
           <span>ROLE: {userRole}</span>
-          <span className="text-emerald-400">ONLINE</span>
+          <span className="text-white font-bold">ONLINE</span>
         </div>
 
         {/* Menu Navigation */}
@@ -72,18 +72,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userR
                   // Restrict Auditor role from accessing Playground & Simulator
                   const isRestricted = userRole === 'Auditor' && ['playground', 'simulator'].includes(item.id);
                   if (isRestricted) return null;
-
+ 
                   return (
                     <button
                       key={item.id}
                       onClick={() => setActiveTab(item.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-xs transition-all duration-300 font-medium ${
                         isActive 
-                          ? 'bg-blue-600/15 border-l-4 border-blue-500 text-blue-300 shadow-glow-blue/5' 
+                          ? 'bg-neutral-800 border-l-4 border-white text-white' 
                           : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/30'
                       }`}
                     >
-                      <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
+                      <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                       <span>{item.label}</span>
                     </button>
                   );
