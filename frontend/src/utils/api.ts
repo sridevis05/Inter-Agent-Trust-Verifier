@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE = 'http://127.0.0.1:8000/api/v1';
+const API_HOST = 'inter-agent-trust-verifier-1.onrender.com';
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://127.0.0.1:8000/api/v1'
+  : `https://${API_HOST}/api/v1`;
 
 export const api = axios.create({
   baseURL: API_BASE,
@@ -120,9 +123,11 @@ export const runAttackSimulation = (attack_type: string) =>
 
 export const getSiemLogs = () => api.get<string[]>('/simulator/siem-logs');
 export const getWSUrl = () => {
-  const loc = window.location;
-  const protocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
-  return `${protocol}//${loc.hostname}:8000/ws`;
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'ws://127.0.0.1:8000/ws';
+  }
+  return `${protocol}//${API_HOST}/ws`;
 };
 
 export interface VerifyResponse {
