@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from app.config import settings
 from app.database import engine, Base, SessionLocal
-from app.routers import agents, policies, tokens, verify, audit, simulator
+from app.routers import agents, policies, tokens, verify, audit, simulator, simple_system
 from app.agents.pipeline import AgentPipelineSimulation, set_broadcast_callback
 from app.services.metrics import PrometheusMetrics
 from typing import List
@@ -45,6 +45,7 @@ app.include_router(policies.router, prefix=api_prefix)
 app.include_router(tokens.router, prefix=api_prefix)
 app.include_router(audit.router, prefix=api_prefix)
 app.include_router(simulator.router, prefix=api_prefix)
+app.include_router(simple_system.router, prefix=api_prefix)
 
 # 6. Prometheus /metrics endpoint
 @app.get("/metrics", response_class=PlainTextResponse, tags=["Observability"])

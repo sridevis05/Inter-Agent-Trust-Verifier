@@ -4,6 +4,7 @@ import { DashboardOverview } from './components/DashboardOverview';
 import { AgentList } from './components/AgentList';
 import { AttackSimulator } from './components/AttackSimulator';
 import { AuditLogs } from './components/AuditLogs';
+import { SimpleMediatorSandbox } from './components/SimpleMediatorSandbox';
 
 import { 
   Agent, 
@@ -127,6 +128,9 @@ export const App: React.FC = () => {
         <AttackSimulator 
           onRefreshLogs={loadAllData} 
         />
+      )}
+      {activeTab === 'plugin-mediator' && (
+        <SimpleMediatorSandbox />
       )}
       {activeTab === 'audit-logs' && (
         <AuditLogs 

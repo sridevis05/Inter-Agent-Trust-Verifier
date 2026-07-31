@@ -4,7 +4,8 @@ import {
   Activity, 
   Users, 
   FileLock2, 
-  History
+  History,
+  ShieldCheck
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -26,6 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userR
       items: [
         { id: 'agents', label: 'Agent Directory', icon: Users },
         { id: 'simulator', label: 'Threat Simulator', icon: ShieldAlert },
+        { id: 'plugin-mediator', label: 'Plugin Mediator', icon: ShieldCheck },
         { id: 'audit-logs', label: 'Security Audits', icon: History },
       ]
     }

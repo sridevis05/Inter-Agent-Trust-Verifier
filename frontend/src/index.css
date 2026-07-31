@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,19 +7,20 @@
 @layer base {
   body {
     @apply bg-slate-950;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-    font-weight: 400 !important;
-    color: #f1f5f9 !important; /* Premium high-contrast light grey for clean reading */
-    line-height: 1.625 !important; /* Comfortable line height */
-    letter-spacing: 0.015em !important; /* Proper text spacing */
-    word-spacing: 0.06em !important; /* Spacious word-spacing */
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    font-weight: 500 !important; /* Mapped to medium weight for clear readability */
+    color: #e2e8f0 !important; /* Increased contrast light grey for high visibility */
+    line-height: 1.75 !important;
+    letter-spacing: 0.03em !important;
+    word-spacing: 0.18em !important; /* Leaves enough space between words */
   }
 }
 
 /* Typographical Spacing & Weight Hierarchy */
 * {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  letter-spacing: 0.01em !important;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0.03em !important;
+  word-spacing: 0.18em !important; /* Extra space between words */
 }
 
 /* Monospaced fields & code elements */
@@ -26,15 +29,19 @@
 }
 
 /* Bold necessary details only (Headings, table headers, bold text elements) */
-h1, h2, h3, h4, h5, h6, strong, b, th, .font-bold, .font-semibold {
-  font-weight: 700 !important;
-  color: #ffffff !important; /* Bright white for key metrics and headings */
+h1, h2, h3, h4, h5, h6, th, .font-bold, .font-semibold, .uppercase-header {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important; /* Heavier bold for clear definition */
+  color: #ffffff !important; /* Bright white for prominent headings */
+  text-transform: uppercase !important; /* Force capital letters for headings */
 }
 
 /* Standard paragraph, labels, and spans hierarchy */
-p, span, td, li, pre, code {
-  font-weight: 450 !important;
-  line-height: 1.625 !important;
+p, li, td, .lowercase-content {
+  font-weight: 550 !important; /* Increased from 450 to 550 for higher visibility */
+  line-height: 1.75 !important;
+  color: #cbd5e1 !important; /* Softer light grey with strong contrast on dark backgrounds */
+  text-transform: lowercase !important; /* Force lower case letters for contents */
 }
 
 label, .uppercase {
@@ -126,37 +133,37 @@ label, .uppercase {
 
 /* Global Font Size Scale for Readability & Consistency */
 .text-\[8px\] {
-  font-size: 10px !important;
-}
-.text-\[9px\] {
-  font-size: 11px !important;
-}
-.text-\[10px\] {
-  font-size: 12px !important;
-}
-.text-\[11px\] {
   font-size: 13px !important;
 }
-.text-xs {
-  font-size: 12px !important;
-}
-.text-sm {
+.text-\[9px\] {
   font-size: 14px !important;
 }
-.text-base {
+.text-\[10px\] {
   font-size: 15px !important;
 }
+.text-\[11px\] {
+  font-size: 16px !important;
+}
+.text-xs {
+  font-size: 15px !important;
+}
+.text-sm {
+  font-size: 17px !important;
+}
+.text-base {
+  font-size: 19px !important;
+}
 .text-lg {
-  font-size: 18px !important;
+  font-size: 22px !important;
 }
 .text-xl {
-  font-size: 20px !important;
+  font-size: 26px !important;
 }
 .text-2xl {
-  font-size: 24px !important;
+  font-size: 30px !important;
 }
 .text-3xl {
-  font-size: 30px !important;
+  font-size: 36px !important;
 }
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.025em !important;
